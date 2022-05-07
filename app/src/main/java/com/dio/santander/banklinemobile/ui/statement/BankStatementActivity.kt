@@ -39,22 +39,18 @@ class BankStatementActivity : AppCompatActivity() {
     }
 
     private fun findBankStatement() {
-        Log.d("REFRESH","start")
         viewModel.findBankStatement(accountHolder.id).observe(this) { state ->
             when(state) {
                 is State.Success -> {
                     binding.rvBankStatement.adapter = state.data?.let { BankStatementAdapter(it) }
                     binding.srlBankStatement.isRefreshing = false
-                    Log.d("REFRESH","success")
                 }
                 is State.Error -> {
                     state.message?.let { Snackbar.make(binding.rvBankStatement, it, Snackbar.LENGTH_LONG).show() }
                     binding.srlBankStatement.isRefreshing = false
-                    Log.d("REFRESH","error")
                 }
                 State.Wait -> {
                     binding.srlBankStatement.isRefreshing = true
-                    Log.d("REFRESH","error")
                 }
             }
 
